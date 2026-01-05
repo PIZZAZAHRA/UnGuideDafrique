@@ -13,10 +13,15 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Draw the map ONLY when entering the map page
-    if (name === "map") {
-      renderPreciseAfricaMap((pageName) => {
-        window.location.hash = pageName;
-        showPage(pageName);
+  if (name === "map" && !mapAlreadyDrawn) {
+  mapAlreadyDrawn = true;
+
+  renderPreciseAfricaMap((pageName) => {
+    window.location.hash = pageName;
+    showPage(pageName);
+  });
+}
+
       });
     }
   }
