@@ -1,5 +1,6 @@
-document.addEventListener("DOMContentLoaded", () => {
 let mapAlreadyDrawn = false;
+
+document.addEventListener("DOMContentLoaded", () => {
 
   // -------- Show / hide pages --------
   function showPage(name) {
@@ -13,16 +14,13 @@ let mapAlreadyDrawn = false;
       a.classList.toggle("active", a.dataset.page === name);
     });
 
-    // Draw the map ONLY when entering the map page
-  if (name === "map" && !mapAlreadyDrawn) {
-  mapAlreadyDrawn = true;
+    // Draw the map ONLY once, the first time we enter the map page
+    if (name === "map" && !mapAlreadyDrawn) {
+      mapAlreadyDrawn = true;
 
-  renderPreciseAfricaMap((pageName) => {
-    window.location.hash = pageName;
-    showPage(pageName);
-  });
-}
-
+      renderPreciseAfricaMap((pageName) => {
+        window.location.hash = pageName;
+        showPage(pageName);
       });
     }
   }
@@ -75,7 +73,7 @@ async function renderPreciseAfricaMap(openPage) {
   const container = document.getElementById("africaMap");
   if (!container) return;
 
-  // Always clear before drawing (prevents duplication)
+  // Always clear before drawing
   container.innerHTML = "";
 
   // ISO numeric IDs
@@ -96,12 +94,16 @@ async function renderPreciseAfricaMap(openPage) {
   const topoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
   const namesUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.tsv";
 
-  const topology = await fetch(topoUrl).then(r => r.json());
+  const topoRes = await fetch(topoUrl);
+  const topology = await topoRes.json();
 
   let tsvText = "";
   try {
-    tsvText = await fetch(namesUrl).then(r => r.text());
-  } catch (e) {}
+    const namesRes = await fetch(namesUrl);
+    tsvText = await namesRes.text();
+  } catch (e) {
+    // names are optional, map still works without them
+  }
 
   const nameById = new Map();
   if (tsvText.trim()) {
@@ -169,4 +171,5 @@ async function renderPreciseAfricaMap(openPage) {
     .append("title")
     .text(d => d.name);
 }
+
 
