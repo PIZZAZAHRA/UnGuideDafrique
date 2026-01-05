@@ -191,9 +191,10 @@ a:hover {
   opacity: 0.8;
 }
 .item-card img {
-  width: 50%;
-  height: 50px;      /* controls how tall it is */
-  object-fit: cover; /* crops instead of stretching */
+  width: 190px;
+  height: 190px;
+  object-fit: cover;
   border-radius: 12px;
   display: block;
+  margin: 0 auto; /* centers the image */
 }
