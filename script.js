@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+let mapAlreadyDrawn = false;
 
   // -------- Show / hide pages --------
   function showPage(name) {
